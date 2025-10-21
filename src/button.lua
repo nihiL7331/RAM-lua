@@ -11,11 +11,7 @@ local STATE = {
 local TEMPLATE = {
     ["SIDE"] = {
         spriteIndex = 1,
-        size = { x = windowWidth/16, y = windowHeight/4 }
-    },
-    ["INPUT"] = {
-        spriteIndex = 2,
-        size = { x = 0.175 * windowWidth, y = windowHeight/20}
+        size = { x = windowWidth/10, y = windowHeight/4 }
     }
 }
 
@@ -134,11 +130,12 @@ function Button:draw()
         screenScale
     )
     -- debug
-    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.setColor(1, 1, 1, 1)
+    if not debugDraw then return end
     love.graphics.print(
         tostring(self.state),
-        self.x,
-        self.y
+        self.x + 8,
+        self.y + 8
     )
     love.graphics.setColor(1,1,1,1)
 end
