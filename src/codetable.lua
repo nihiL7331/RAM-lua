@@ -25,11 +25,19 @@ function Codetable:createLine(y)
         [3] = "",
         [4] = ""
     }
-    table.insert(code,y,line)
+    table.insert(code,y or (#code+1),line)
 end
 
 function Codetable:getSize()
     return #code
+end
+
+function Codetable:getCode()
+    local newCode = {}
+    for i = 2, #code do 
+        table.insert(newCode, code[i])
+    end
+    return newCode
 end
 
 function Codetable:load()
@@ -53,7 +61,11 @@ function Codetable:deleteChar()
     local len = #code[pointer.y][pointer.x]
     if len == 0 then 
         --go left
-        setPointer(pointer.x-1,pointer.y)
+        if(pointer.x == 1 and pointer.y ~= 2) then 
+            setPointer(4,pointer.y-1)
+        else
+            setPointer(pointer.x-1,pointer.y)
+        end
     else
         --delete the char
         code[pointer.y][pointer.x] = string.sub(code[pointer.y][pointer.x],1,len-1)
@@ -95,7 +107,9 @@ function Codetable:draw()
         end
     end
     if not debugDraw then return end
-    love.graphics.print("X: "..pointer.x.." Y: "..pointer.y, windowWidth/2, windowHeight - 16)
+    local oV = 0
+    if #output > 0 then oV = output[1] end
+    love.graphics.print("O1: "..oV.." AC: "..memTable[0], windowWidth/2, windowHeight - 16)
 end
 
 return Codetable

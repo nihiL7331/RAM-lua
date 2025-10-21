@@ -16,11 +16,12 @@ currentInput = -1
 currentMode = MODE.CONTROL
 
 
-debugDraw = false
+debugDraw = true
 
 
 local button = require "src.button"
 local codetable = require "src.codetable"
+local interpreter = require "src.interpreter"
 local helper = require "src.helper"
 
 function Core:onMouseClick()
@@ -30,9 +31,9 @@ function Core:onMouseClick()
 end
 
 function Core:load()
-    helper:load(codetable)
+    helper:load(codetable,interpreter)
 
-    button:new(0,0,{index = "SIDE", variation = "start"},{})
+    button:new(0,0,{index = "SIDE", variation = "start"},{onClick = runCode})
     button:new(0,windowHeight/4,{index = "SIDE", variation = "new"},{onClick = createLine})
     button:new(0,windowHeight/2,{index = "SIDE", variation = "speed"},{})
     button:new(0,windowHeight*3/4,{index = "SIDE", variation = "stop"},{})

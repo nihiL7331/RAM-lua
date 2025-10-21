@@ -2,13 +2,20 @@ local Helper = {}
 Helper.__index = Helper
 
 local codetable = nil 
+local interpreter = nil
 
-function Helper:load(ct)
+function Helper:load(ct,i)
     codetable = ct
+    interpreter = i
 end 
 
+function runCode()
+    local c = codetable:getCode()
+    interpreter:runCode(c)
+end
+
 function createLine(y)
-    codetable:createLine(y or nil)
+    codetable:createLine(y)
 end
 
 function setMode(mode)

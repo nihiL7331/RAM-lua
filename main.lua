@@ -37,13 +37,11 @@ end
 
 function love.keypressed(key) 
     local m = getMode()
-    if m == MODE.INSERT then 
-        writeChar(key)
-    end
     if key == "i" then 
         --insert mode, if currently running then halt
         if m == MODE.CONTROL then 
             setMode("INSERT")
+            return
         else
 
         end
@@ -51,42 +49,50 @@ function love.keypressed(key)
         --control mode
         if m == MODE.INSERT then 
             setMode("CONTROL")
+            return
         end
     elseif key == "space" then 
         --go right if in INSERT, start/pause if in control
         if m == MODE.INSERT then 
             movePointer(1,0)
+            return
         else
             
         end
-    elseif key == "right" then 
+    elseif key == "right" or key == "tab" then 
         --go right if in insert
         if m == MODE.INSERT then 
             movePointer(1,0)
+            return
         end
     elseif key == "down" then 
         --go down if in insert, if in lowest cell then add new cell
         if m == MODE.INSERT then 
             moveDown()
+            return
         end
     elseif key == "return" then 
         if m == MODE.INSERT then 
             moveDown()
             local pos = getPointer()
             setPointer(0,pos.y)
+            return
         end
     elseif key == "backspace" then 
         --if insert: if empty: go left, if empty and in leftmost cell: go up and wrap around, else: delete character
         if m == MODE.INSERT then 
             deleteChar()
+            return
         end
     elseif key == "left" then 
         if m == MODE.INSERT then 
             movePointer(-1,0)
+            return
         end
     elseif key == "up" then 
         if m == MODE.INSERT then 
             movePointer(0,-1)
+            return
         end
     elseif key == "n" then 
         --if insert: if holds ctrl, make new line
@@ -94,6 +100,9 @@ function love.keypressed(key)
         --if control: change mode (instant, animated)
     elseif key == "d" then 
         --if control: halt
+    end
+    if m == MODE.INSERT then 
+        writeChar(key)
     end
 end
 
