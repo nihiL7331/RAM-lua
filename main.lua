@@ -81,7 +81,7 @@ function love.keypressed(key)
     elseif key == "backspace" then 
         --if insert: if empty: go left, if empty and in leftmost cell: go up and wrap around, else: delete character
         if m == MODE.INSERT then 
-            deleteChar()
+            deleteChar(true)
             return
         end
     elseif key == "left" then 

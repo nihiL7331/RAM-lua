@@ -18,11 +18,25 @@ function createLine(y)
     codetable:createLine(y)
 end
 
+function setCanvas(name)
+    currentCanvas = canvases[name]
+    for i, canvae in pairs(canvases) do 
+        if canvae == currentCanvas then 
+            canvae.targetPosX = canvae.onPos.x 
+            canvae.targetPosY = canvae.onPos.y 
+        else
+            canvae.targetPosX = canvae.offPos.x 
+            canvae.targetPosY = canvae.offPos.y 
+        end
+    end
+end
+
 function setMode(mode)
     currentMode = MODE[mode]
     if mode == "INSERT" then 
         setPointer(1,1)
     end
+    setCanvas(mode)
 end
 
 function movePointer(dx,dy)
@@ -49,8 +63,8 @@ function moveDown()
     movePointer(0,1)
 end
 
-function deleteChar()
-    codetable:deleteChar()
+function deleteChar(rm)
+    codetable:deleteChar(rm)
 end
 
 function writeChar(key)

@@ -9,9 +9,17 @@ local STATE = {
 }
 
 local TEMPLATE = {
-    ["SIDE"] = {
+    ["CONTROL"] = {
         spriteIndex = 1,
         size = { x = windowWidth/10, y = windowHeight/4 }
+    },
+    ["INSERT"] = {
+        spriteIndex = 2,
+        size = { x = windowWidth/10, y = windowWidth/8 }
+    },
+    ["OUTPUT"] = {
+        spriteIndex = 2,
+        size = { x = windowWidth/10, y = windowWidth/8 }
     }
 }
 
@@ -26,11 +34,13 @@ function Button:new(x,y,template,callbacks)
 
     self.x = x
     self.y = y 
+    self.relativePos = { x = 0, y = 0 }
 
     local templateData = getTemplate(template.index,template.variation or '')
     self.size = templateData.size
     self.sprite = templateData.sprite
 
+    self.enabled = true
     self.state = STATE.IDLE
     self.callbacks = {
         onIdle = callbacks.onIdle or nil,
@@ -48,6 +58,7 @@ function Button:new(x,y,template,callbacks)
 end
 
 function Button:update(dt, mx, my)
+    if not self.enabled then return end
     self:updateState(dt, mx, my)
 end
 
@@ -123,8 +134,8 @@ function Button:draw()
     end
     love.graphics.draw(
         self.sprite,
-        self.x,
-        self.y,
+        self.x + self.relativePos.x,
+        self.y + self.relativePos.y,
         nil,
         screenScale,
         screenScale
@@ -134,8 +145,8 @@ function Button:draw()
     if not debugDraw then return end
     love.graphics.print(
         tostring(self.state),
-        self.x + 8,
-        self.y + 8
+        self.x + self.relativePos.x + 8,
+        self.y + self.relativePos.y + 8
     )
     love.graphics.setColor(1,1,1,1)
 end

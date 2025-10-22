@@ -57,11 +57,14 @@ function Codetable:getPointer()
     return pointer
 end
 
-function Codetable:deleteChar()
+function Codetable:deleteChar(rm)
     local len = #code[pointer.y][pointer.x]
     if len == 0 then 
         --go left
         if(pointer.x == 1 and pointer.y ~= 2) then 
+            if rm then 
+                table.remove(code,pointer.y)
+            end
             setPointer(4,pointer.y-1)
         else
             setPointer(pointer.x-1,pointer.y)
